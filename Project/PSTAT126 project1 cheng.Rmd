@@ -1,0 +1,138 @@
+---
+title: "PSTAT126 Project"
+output: html_document
+date: "2023-10-10"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("skimr")
+options(max.print=10000000)
+
+
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+```{r}
+skim(train2)
+```
+
+```{r}
+
+train1 <- subset(train, select = -c(MSSubClass, OverallCond, BsmtFinSF2, LowQualFinSF, BsmtHalfBath, YrSold, MoSold, MiscVal, PoolArea, ScreenPorch, EnclosedPorch, KitchenAbvGr, BedroomAbvGr, Street, Alley, Utilities, LandSlope, RoofMatl, BsmtExposure, Heating, CentralAir, MiscFeature, Fence, PoolQC, LotFrontage, LandContour, BldgType, GarageQual
+, GarageCond, PavedDrive, SaleType, SaleCondition, GrLivArea, OverallQual, TotalBsmtSF, WoodDeckSF, GarageArea, Fireplaces, TotRmsAbvGrd, MSZoning, Functional, GarageYrBlt, MasVnrArea, YearBuilt, YearRemodAdd))
+train1
+
+drop <- c("Condition1", "Condition2", "3SsnPorch", "Exterior2nd", "1stFlrSF", "2ndFlrSF")
+train2 <- train1[,!(names(train1) %in% drop)]
+train2
+```
+
+```{r}
+# Correlation 
+cor(select_if(train2, is.numeric))
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+
+
+```{r}
+train2_numerical <- select_if(train2, is.numeric)
+
+ggplot(data = train2 , mapping = aes(x = LotArea, y = SalePrice)) + 
+  geom_point() +
+  labs(title="LotArea vs SalePrice",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("LotArea") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = BsmtUnfSF, y = SalePrice)) + 
+  geom_point() +
+  labs(title="BsmtUnfSF vs SalePrice",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("BsmtUnfSF") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = BsmtFinSF1, y = SalePrice)) + 
+  geom_point() +
+  labs(title="BsmtFinSF1 vs SalePrice",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("BsmtFinSF1") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = BsmtFullBath, y = SalePrice)) + 
+  geom_point() +
+  labs(title="BsmtFullBath vs SalePrice",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("BsmtFullBath") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = FullBath, y = SalePrice)) + 
+  geom_point() +
+  labs(title="title",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("FullBath") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = HalfBath, y = SalePrice)) + 
+  geom_point() +
+  labs(title="title",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("HalfBath") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = GarageCars, y = SalePrice)) + 
+  geom_point() +
+  labs(title="title",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("GarageCars") + ylab("SalePrice")
+
+ggplot(data = train2 , mapping = aes(x = OpenPorchSF, y = SalePrice)) + 
+  geom_point() +
+  labs(title="OpenPorchSF vs SalePrice",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("OpenPorchSF") + ylab("SalePrice")
+
+
+for (i in colnames(train2_numerical)){
+  print(ggplot(data = train2 , mapping = aes(x = i, y = SalePrice)))
+}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+ggplot(data = train2 , mapping = aes(x = , y = SalePrice)) + 
+  geom_point() +
+  labs(title="title",subtitle="subtitle",caption="caption",tag="tag") +
+  xlab("xlab") + ylab("ylab")
+```
+
+Lot Area vs SalePrice shows a scatterplot that has a relationship between Lot Area and SalePrice since an increase in Lot Area would generally symbolize an increase in SalePrice as well, although this is not very heavy since most of the points are scattered near the beginning of the values.
+
+BsmtUnfSF vs SalePrice shows a scatterplot that has a very weak relationship between BsmtUnfSF and SalePrice since generally an increase in BsmtUnfSF would not correspond to an increase in SalePrice. There is also a vertical piling up of data points along the 0 value of the BsmtUnfSF
+
+BsmtFinSF1 vs SalePrice shows a scatterplot that has a strong relationship between BsmtFinSF1 and SalePrice since an increase in BsmtFinSF1 would correlate to a strong increase in SalePrice data points. Similar to the BsmtUnfSF vs SalePrice plot, there is also a vertical piling up of data points along the 0 value of the BsmtFinSF1 vs SalePrice plot.
+
+OpenPorchSF vs SalePrice shows a scatterplot that has a relatively very weak relationship between OpenPorchSF and SalePrice since generally an increase in OpenPorchSF would not correspond an obvious increase in SalePrice. Similar to the BsmtUnfSF vs SalePrice and BsmtFinSF1 vs SalePrice plots, there is also a vertical piling up of data points along the 0 value of the OpenPorchSF vs SalePrice plot.
+
+Description:
+
+```{r}
+print(train2)
+```
+
+## The BsmtFullbath vs SalePrice plot is of interest because the values on the y-axis are highly apart from 0 and also the dots fit together like a straight line up from the actual values of numbers like 0 and 1.
+
+## The Fullbath vs SalePrice plot is of interest since the values with the dots are lined up vertically but with the number 0 the dots are scattered apart vertically
+
+## The Halfbath vs SalePrice plot is of interest since the values with the dots are lined up vertically but some dots are scattered far from the vertical lines of lined up dots.
+
+## The GarageCars vs SalePrice plot is of interest because the values with the dots are lined up vertically but the dots along 3 and 4 have vast places where the dots are all over the vertical line.
+
+
+## 
